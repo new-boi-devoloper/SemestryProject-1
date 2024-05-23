@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 
 public class ResourceBank : MonoBehaviour
 {
@@ -11,39 +12,42 @@ public class ResourceBank : MonoBehaviour
     private int ironAmount;
     [SerializeField] private TextMeshProUGUI ironAmountText;
 
-    private int instrumentsAmount;
-    [SerializeField] private TextMeshProUGUI instrumentsAmountText;
+    private int blueprintsAmount;
+    [SerializeField] private TextMeshProUGUI blueprintsAmountText;
 
     //WOOD
     public int GetWood()
     {
         return woodAmount;
     }
+
     public void SetWood(int woodToAdd)
     {
         woodAmount += woodToAdd;
         woodAmountText.text = $"{woodAmount}";
     }
-    
+
     //IRON
     public int GetIron()
     {
         return ironAmount;
     }
+
     public void SetIron(int ironToAdd)
     {
         ironAmount += ironToAdd;
         ironAmountText.text = $"{ironAmount}";
     }
-    
+
     //INSTRUMENTS
-    public int GetInstruments()
+    public int GetBlueprints()
     {
-        return instrumentsAmount;
+        return blueprintsAmount;
     }
-    public void SetInstruments(int instrumentsToAdd)
+
+    public void SetBlueprints(int blueprintsToAdd)
     {
-        instrumentsAmount += instrumentsToAdd;
-        instrumentsAmountText.text = $"{instrumentsAmount}";
+        blueprintsAmount += blueprintsToAdd;
+        blueprintsAmountText.text = $"{blueprintsAmount}";
     }
 }

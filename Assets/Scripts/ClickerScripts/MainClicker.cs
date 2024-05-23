@@ -1,22 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
 public class MainClicker : MonoBehaviour
 {
     [SerializeField] private int coins; // main game currency
-    [SerializeField] private int hitPower; //Amount to add to coins per click (was made to upgrade through the game)  
+    [SerializeField] private int hitPower; //Amount to add to coins per click (was made to upgrade through the game)
     [SerializeField] private TextMeshProUGUI coinsText; // text to print amount off 
-    
-    public void MainButtonHit() 
+
+    private int _passiveIncome = 0;
+
+    private void FixedUpdate()
     {
-        coins+=hitPower;
-        coinsText.text = $"Монет: {coins}";
-        EventSystem.current.SetSelectedGameObject(null); // Only for making UI look unselected after selecting the button
+        PassiveIncome();
     }
+
+    public void MainButtonHit()
+    {
+        coins += hitPower;
+        coinsText.text = $"Монет: {coins}";
+        EventSystem.current
+            .SetSelectedGameObject(null); // Only for making UI look unselected after selecting the button
+    }
+
+    #region Coins
 
     public int GetCoins()
     {
@@ -28,4 +35,30 @@ public class MainClicker : MonoBehaviour
         coins += coinsToAdd;
         coinsText.text = $"Монет: {coins}";
     }
+
+    public void SetHitPower(int count)
+    {
+        hitPower += count;
+    }
+
+    #endregion
+
+    #region PassvieIncome
+
+    private void PassiveIncome()
+    {
+        coins += _passiveIncome;
+    }
+
+    public int GetPassiveIncome()
+    {
+        return _passiveIncome;
+    }
+
+    public void SetPassiveIncome(int count)
+    {
+        _passiveIncome += count;
+    }
+
+    #endregion
 }
