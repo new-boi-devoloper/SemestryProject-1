@@ -21,27 +21,28 @@ public class PassiveIncomeBuildingLv1 : MonoBehaviour, IInteractableObject, IBui
     [SerializeField] private MainClicker mainClicker;
     [SerializeField] private ResourceBank resourceBank;
     [SerializeField] private GameObject notification; // Notification of no money
+    [SerializeField] private SaveLoadSystem saveLoadSystem;
     private MeshRenderer _buildMeshRenderer;
 
-    private PassiveIncomeBuildingLv1 _instance; // ???
+    private static PassiveIncomeBuildingLv1 _instance; // ??? how to make not uninteractble
 
     private void Start()
     {
         _buildMeshRenderer = GetComponent<MeshRenderer>();
         _instance = GetComponent<PassiveIncomeBuildingLv1>();
-        
     }
 
     #region IInteractableObject interface
 
     public void Interact()
     {
-        if (Checkout())
+        if (PossibleToBuy()) 
         {
             mainClicker.SetPassiveIncome(passiveIncome);
             CreateBoom();
             _buildMeshRenderer.enabled = true;
             DisableIBuilding();
+            saveLoadSystem.AddBuilding(gameObject);
         }
         else
         {
@@ -49,18 +50,38 @@ public class PassiveIncomeBuildingLv1 : MonoBehaviour, IInteractableObject, IBui
         }
     }
 
-
     public string GetDescription()
     {
         return $"Постройка стоит {woodToBuild} дерева, {ironToBuild} железа, {blueprintsToBuild} чертежей";
     }
+    
 
     #endregion
 
-    private void DisableIBuilding()
+    #region PurchaseLogic
+
+    private bool PossibleToBuy()
+    {
+        if (Checkout() && !_buildMeshRenderer.enabled)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void MakeUninteractble()  // ??? how to make not uninteractble
+    {
+        
+    }
+
+    public static void DisableIBuilding()  // ??? how to make not uninteractble
     {
         _instance.enabled = false;
     }
+    
+    #endregion
+
 
     #region ParticleEffect creation
 

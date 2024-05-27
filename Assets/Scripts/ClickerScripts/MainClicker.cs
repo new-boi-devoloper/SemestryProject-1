@@ -6,11 +6,13 @@ using UnityEngine.EventSystems;
 
 public class MainClicker : MonoBehaviour
 {
+    [Header("Player's stats")]
     [SerializeField] private int coins; // main game currency
     [SerializeField] private int hitPower; //Amount to add to coins per click (was made to upgrade through the game)
-    [SerializeField] private TextMeshProUGUI coinsText; // text to print amount off 
-
     private int _passiveIncome = 0;
+    
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI coinsText; // text to print amount off 
 
     private void Start()
     {
@@ -37,6 +39,10 @@ public class MainClicker : MonoBehaviour
         coins += coinsToAdd;
         
         coinsText.text = $"Монет: {coins}";
+    }
+    public int GetHitPower()
+    {
+        return hitPower;
     }
 
     public void SetHitPower(int count)

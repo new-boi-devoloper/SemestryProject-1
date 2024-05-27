@@ -21,6 +21,7 @@ public class IncreaseClickBuildingLv1 : MonoBehaviour, IBuilding, IInteractableO
     [SerializeField] private MainClicker mainClicker;
     [SerializeField] private ResourceBank resourceBank;
     [SerializeField] private GameObject notification; // Notification of no money
+    [SerializeField] private SaveLoadSystem saveLoadSystem;
     private MeshRenderer _buildMeshRenderer;
 
     private IncreaseClickBuildingLv1 _instance; // ???
@@ -35,19 +36,19 @@ public class IncreaseClickBuildingLv1 : MonoBehaviour, IBuilding, IInteractableO
 
     public void Interact()
     {
-        if (Checkout())
+        if (PossibleToBuy())
         {
             mainClicker.SetHitPower(countToIncrease);
             CreateBoom();
             _buildMeshRenderer.enabled = true;
             DisableIBuilding();
+            // saveLoadSystem.AddBuilding(gameObject);
         }
         else
         {
             ShowNotification();
         }
     }
-
 
     public string GetDescription()
     {
@@ -56,10 +57,37 @@ public class IncreaseClickBuildingLv1 : MonoBehaviour, IBuilding, IInteractableO
 
     #endregion
 
-    private void DisableIBuilding()
+    #region PurchaseLogic
+
+    private bool PossibleToBuy()
     {
-        _instance.enabled = false;
+        if (Checkout() && !_buildMeshRenderer.enabled)
+        {
+            return true;
+        }
+
+        if (_buildMeshRenderer.enabled)
+        {
+            return false;
+        }
+
+        return false;
     }
+
+    private void MakeUninteractble()  // ??? how to make not uninteractble
+    {
+        if (PossibleToBuy())
+        {
+            //MakeUnIninteractable
+        }
+    }
+
+    private void DisableIBuilding()  // ??? how to make not uninteractble
+    {
+        // _instance.enabled = false;
+    }
+    
+    #endregion
 
     #region ParticleEffect creation
 
