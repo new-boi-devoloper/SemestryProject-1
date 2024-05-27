@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,9 +12,9 @@ public class MainClicker : MonoBehaviour
 
     private int _passiveIncome = 0;
 
-    private void FixedUpdate()
+    private void Start()
     {
-        PassiveIncome();
+        InvokeRepeating(nameof(PassiveIncome), 1f, 1f);
     }
 
     public void MainButtonHit()
@@ -33,6 +35,7 @@ public class MainClicker : MonoBehaviour
     public void SetCoins(int coinsToAdd) //Multipurpose
     {
         coins += coinsToAdd;
+        
         coinsText.text = $"Монет: {coins}";
     }
 
@@ -48,6 +51,8 @@ public class MainClicker : MonoBehaviour
     private void PassiveIncome()
     {
         coins += _passiveIncome;
+        
+        coinsText.text = $"Монет: {coins}";
     }
 
     public int GetPassiveIncome()

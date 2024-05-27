@@ -2,7 +2,7 @@ using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class PassiveIncomeBuildingLv1 : MonoBehaviour, IInteractableObject, IBuilding
+public class IncreaseClickBuildingLv1 : MonoBehaviour, IBuilding, IInteractableObject
 {
     [Header("Building Price")]
     [SerializeField] private int woodToBuild;
@@ -12,9 +12,9 @@ public class PassiveIncomeBuildingLv1 : MonoBehaviour, IInteractableObject, IBui
     public int WoodToBuild => woodToBuild;
     public int IronToBuild => ironToBuild;
     public int BlueprintsToBuild => blueprintsToBuild;
-
+    
     [Header("Building Impact")] 
-    [SerializeField] private int passiveIncome = 1;
+    [SerializeField] private int countToIncrease = 1;
     [SerializeField] private ParticleSystem particleSystem;
 
     [Header("For System")] 
@@ -23,13 +23,12 @@ public class PassiveIncomeBuildingLv1 : MonoBehaviour, IInteractableObject, IBui
     [SerializeField] private GameObject notification; // Notification of no money
     private MeshRenderer _buildMeshRenderer;
 
-    private PassiveIncomeBuildingLv1 _instance; // ???
+    private IncreaseClickBuildingLv1 _instance; // ???
 
     private void Start()
     {
         _buildMeshRenderer = GetComponent<MeshRenderer>();
-        _instance = GetComponent<PassiveIncomeBuildingLv1>();
-        
+        _instance = GetComponent<IncreaseClickBuildingLv1>();
     }
 
     #region IInteractableObject interface
@@ -38,7 +37,7 @@ public class PassiveIncomeBuildingLv1 : MonoBehaviour, IInteractableObject, IBui
     {
         if (Checkout())
         {
-            mainClicker.SetPassiveIncome(passiveIncome);
+            mainClicker.SetHitPower(countToIncrease);
             CreateBoom();
             _buildMeshRenderer.enabled = true;
             DisableIBuilding();
