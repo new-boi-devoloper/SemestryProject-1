@@ -9,6 +9,7 @@ public class GameStateManger : MonoBehaviour
     [SerializeField] private GameObject clickerContainer;
     [SerializeField] private CursorBehaviour _cursorBehaviour;
     [SerializeField] private ThirdPersonController thirdPersonController;
+    [SerializeField] private Animator stateAnim;
 
     private bool isInClicker;
 
@@ -41,6 +42,7 @@ public class GameStateManger : MonoBehaviour
 
         clickerContainer.SetActive(true);
         _cursorBehaviour.UnLockFunction();
+        stateAnim.SetFloat("Speed", 0);
         thirdPersonController.enabled = false;
     }
 

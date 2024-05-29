@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -29,6 +31,7 @@ public class PassiveIncomeBuildingLv1 : MonoBehaviour, IInteractableObject, IBui
     private void Start()
     {
         _buildMeshRenderer = GetComponent<MeshRenderer>();
+
         _instance = GetComponent<PassiveIncomeBuildingLv1>();
     }
 
@@ -42,7 +45,7 @@ public class PassiveIncomeBuildingLv1 : MonoBehaviour, IInteractableObject, IBui
             CreateBoom();
             _buildMeshRenderer.enabled = true;
             DisableIBuilding();
-            saveLoadSystem.AddBuilding(gameObject);
+            // saveLoadSystem.AddBuilding(gameObject);
         }
         else
         {
@@ -54,7 +57,6 @@ public class PassiveIncomeBuildingLv1 : MonoBehaviour, IInteractableObject, IBui
     {
         return $"Постройка стоит {woodToBuild} дерева, {ironToBuild} железа, {blueprintsToBuild} чертежей";
     }
-    
 
     #endregion
 
@@ -62,9 +64,14 @@ public class PassiveIncomeBuildingLv1 : MonoBehaviour, IInteractableObject, IBui
 
     private bool PossibleToBuy()
     {
-        if (Checkout() && !_buildMeshRenderer.enabled)
+        if (!_buildMeshRenderer.enabled && Checkout() )
         {
             return true;
+        }
+
+        if (_buildMeshRenderer.enabled)
+        {
+            return false;
         }
 
         return false;
@@ -72,7 +79,10 @@ public class PassiveIncomeBuildingLv1 : MonoBehaviour, IInteractableObject, IBui
 
     public void MakeUninteractble()  // ??? how to make not uninteractble
     {
-        
+        if (PossibleToBuy())
+        {
+            //MakeUnIninteractable
+        }
     }
 
     public static void DisableIBuilding()  // ??? how to make not uninteractble
@@ -93,6 +103,7 @@ public class PassiveIncomeBuildingLv1 : MonoBehaviour, IInteractableObject, IBui
     private IEnumerator CreateBoomCoroutine()
     {
         var spawnedEffect = Instantiate(particleSystem, transform.position, transform.rotation);
+
         yield return new WaitForSeconds(3);
         Destroy(spawnedEffect.gameObject);
     }

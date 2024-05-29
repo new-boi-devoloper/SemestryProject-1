@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,22 +8,7 @@ public class SaveLoadSystem : MonoBehaviour
 {
     [SerializeField] private ResourceBank resourceBank;
     [SerializeField] private MainClicker mainClicker;
-    [SerializeField] private List<GameObject> boughtBuildings;
-
-    public static SaveLoadSystem Instance;
-
-    public void Awake() //??? Нужно ли
-    {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-
-        DontDestroyOnLoad(gameObject);
-    }
+    private static List<GameObject> _boughtBuildings;
 
     public void SaveData()
     {
@@ -44,6 +30,16 @@ public class SaveLoadSystem : MonoBehaviour
         #endregion
     }
 
+    private void OnDestroy()
+    {
+        SaveData();
+    }
+
+    private void Awake()
+    {
+        LoadData();
+    }
+
     public void LoadData()
     {
         #region MainClicker Load Data
@@ -63,25 +59,60 @@ public class SaveLoadSystem : MonoBehaviour
 
         #endregion
 
-        foreach (var building in boughtBuildings)
+
+        if (_boughtBuildings != null)
         {
-            building.GetComponent<MeshRenderer>().enabled = true;
+            foreach (var building in _boughtBuildings)
+            {
+                building.GetComponent<MeshRenderer>().enabled = true;
+            }
         }
     }
 
     public void DeleteData()
     {
         PlayerPrefs.DeleteAll();
-        boughtBuildings.Clear();
+
+        #region Mainclicker set to 0
+
+        var coins = mainClicker.GetCoins();
+        mainClicker.SetCoins(-coins);
+        
+        var hitPower = mainClicker.GetHitPower();
+        mainClicker.SetHitPower(-hitPower+1);
+        
+        var passiveIncome = mainClicker.GetPassiveIncome();
+        mainClicker.SetPassiveIncome(-passiveIncome);
+        
+        #endregion
+
+        
+        #region ResourceBank set to 0
+
+        var wood = resourceBank.GetWood();
+        resourceBank.SetWood(-wood);
+        
+        var iron = resourceBank.GetIron();
+        resourceBank.SetIron(-iron);
+        
+        var blueprints = resourceBank.GetBlueprints();
+        resourceBank.SetBlueprints(-blueprints);
+
+        #endregion
+
+        if (_boughtBuildings != null)
+        {
+            _boughtBuildings.Clear();
+        }
     }
 
     public void AddBuilding(GameObject buildingToAdd)
     {
-        boughtBuildings.Add(buildingToAdd);
+        _boughtBuildings.Add(buildingToAdd);
     }
 
     public void RemoveBuilding(GameObject buildingToRemove) //Just for any case
     {
-        boughtBuildings.Remove(buildingToRemove);
+        _boughtBuildings.Remove(buildingToRemove);
     }
 }

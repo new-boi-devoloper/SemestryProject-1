@@ -29,6 +29,7 @@ public class IncreaseClickBuildingLv1 : MonoBehaviour, IBuilding, IInteractableO
     private void Start()
     {
         _buildMeshRenderer = GetComponent<MeshRenderer>();
+        
         _instance = GetComponent<IncreaseClickBuildingLv1>();
     }
 
@@ -36,7 +37,7 @@ public class IncreaseClickBuildingLv1 : MonoBehaviour, IBuilding, IInteractableO
 
     public void Interact()
     {
-        if (PossibleToBuy())
+        if (PossibleToBuy() )
         {
             mainClicker.SetHitPower(countToIncrease);
             CreateBoom();
@@ -61,7 +62,7 @@ public class IncreaseClickBuildingLv1 : MonoBehaviour, IBuilding, IInteractableO
 
     private bool PossibleToBuy()
     {
-        if (Checkout() && !_buildMeshRenderer.enabled)
+        if (!_buildMeshRenderer.enabled && Checkout())
         {
             return true;
         }
